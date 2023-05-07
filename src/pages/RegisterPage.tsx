@@ -122,7 +122,7 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
                                 Aadhar Number:
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 id="aadhar"
                                 className="w-full h-10 rounded-lg px-3 bg-transparent border border-gray-300 text-gray-800 dark:text-white focus:outline-none mb-4"
                                 required
@@ -136,7 +136,7 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
                                 Phone Number:
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 id="phone"
                                 className="w-full h-10 rounded-lg px-3 bg-transparent border border-gray-300 text-gray-800 dark:text-white focus:outline-none mb-4"
                                 required
