@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import SideNavBar from '../components/SideNavBar'
 import TransactionsStatistics from '../components/TransactionsStatistics';
-import CustomerStatistics from '../components/CustomerStatistics';
-import ProfitsStatistics from '../components/ProfitsStatistics';
-import Settings,{SettingsProps} from '../components/Settings';
 import TopCustomers from '../components/TopCustomers';
 import CustomerAccount from '../components/Account';
 import TransactionHistory from '../components/TransactionHistory';

@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter } from "react-router-dom";
-import CustomerAccount from "./components/Account";
-import Home from "./pages/HomePage"
-import AdminDashBoard from "./pages/AdminDashBoard";
-import RegisterSuccess from "./components/RegisterSuccess";
 
 
 const  App = ()=>{
@@ -26,7 +22,6 @@ const  App = ()=>{
     <div className="min-w-screen min-h-screen dark:bg-darkTheme overflow-hidden">
       <BrowserRouter>
         <LandingPage ChangeThemeHandler={changeThemeHandler} theme={theme}/>
-        {/* <AdminDashBoard ChangeThemeHandler={changeThemeHandler} theme={theme} /> */}
       </BrowserRouter>
     </div>
   );
