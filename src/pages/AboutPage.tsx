@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const AboutPage = () => {
     return (
-        <div className="bg-gray-100 dark:bg-black flex justify-center items-center h-[94vh]">
+        <div className="bg-gray-100 dark:bg-black mt-10 flex justify-center items-center h-[94vh]">
             <div className="max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
                     <span className="text-4xl font-medium text-gray-800 dark:text-white">

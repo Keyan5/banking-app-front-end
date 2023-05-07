@@ -1,6 +1,3 @@
-// page for deposit withdraw and transfer to account with tailwind and react
-// typescript
-
 import { useState } from "react";
 import Deposit from "./Deposit"
 import Transfer from "./Transfer"
@@ -10,9 +7,9 @@ const balance = 10000;
 
 const Transactions = () => {
 
-    const [deposit,setDeposit] = useState(true);
-    const [withdraw,setWithdraw] = useState(true);
-    const [transfer,setTransfer] = useState(true);
+    const [deposit,setDeposit] = useState(false);
+    const [withdraw,setWithdraw] = useState(false);
+    const [transfer,setTransfer] = useState(false);
 
     return (
         <div className="flex flex-col justify-center items-center w-screen md:w-full h-screen space-y-8 dark:text-white text-black">
@@ -46,7 +43,7 @@ const Transactions = () => {
                         >
                             Transfer
                     </button>
-                    {transfer?<Transfer balance={balance}/>:null}
+                    {transfer?<Transfer/>:null}
                 </div>
                 <div className="flex flex-col items-center md:w-1/3 ">
                     <button

@@ -5,7 +5,7 @@ const HomePage = () => {
     <div className="md:mt-14">
       <section className="h-fit dark:bg-black bg-lightTheme md:p-4 flex justify-end items-center w-full">
           <div className="m-4 flex flex-col-reverse md:flex-row ">
-            <div className="text-black dark:text-white text-lg font-medium pl-3 pb-3 md:pl-8 md:p-8 w-full md:w-3/4 space-y-8 ">
+            <div className="text-black dark:text-white text-lg font-medium pl-10 pb-3 md:pl-8 md:p-8 w-full md:w-3/4 space-y-8 ">
               <p>
                 Our banking app is a web-based application built using the Spring Boot framework for the backend, PostgreSQL for the database, and React for the frontend. The application provides various functionalities related to banking, including account creation, transaction management, and balance inquiry.
               </p>
@@ -34,12 +34,6 @@ const HomePage = () => {
                         className="hover:underline  my-2 mx-1 py-2 px-3 rounded-md hover:text-blue-500"
                     >
                         <Link to={"register"}>Create an Account</Link> 
-                    </li>
-                    <li 
-                        className=" hover:underline  my-2 mx-1 py-2 px-3 rounded-md hover:text-blue-500"
-                    >
-                        <Link to={"features"}>Explore Features</Link>
-                        
                     </li>
                     <li 
                         className=" hover:underline  my-2 mx-1 py-2 px-3 rounded-md hover:text-blue-500"

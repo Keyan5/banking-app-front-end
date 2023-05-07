@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import DatePicker from "../components/DatePicker";
-import axios from "axios";
+import axios from "../assets/axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
+import RegisterSuccess from "../components/RegisterSuccess";
 
 export interface RegisterPageProps {
     theme : string;
@@ -16,6 +17,8 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
     const [phone, setPhone] = useState<string>("");
     const [DOB, setDOB] = useState<Date>(new Date());
     const [address, setAddress] = useState<string>("");
+
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -32,21 +35,28 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
             panno: pan,
             dateOfBirth: DOB
         }
-        const regRes = await axios.post("http://192.168.104.252/api/v1/auth/register",regData)
-        if(regRes.status === 200) {
-            //display success page for five seconds
-            // setTimeout(() => {
-
-            navigate("/login");
+        try{
+            const regRes = await axios.post("/auth/register",regData)
+            console.log(regRes.data);
+            navigate("/regiterSuccess");
+        }catch(error){
+            setError(true);
+            setTimeout(()=>setError(false),3000);
+            console.log(error);
         }
-        else
-        {
-            console.log("Error...")
-        }
-        console.log(regRes.data);
     };
 
     return (
+        <>
+        {error&&
+        <div className="flex h-screen w-screen justify-center items-center">
+            <div className="bg-red-500 dark:bg-red-600 rounded-md text-white dark:text-gray-100 text-center py-2 px-4">
+                <p>Registration Failed</p> 
+                <p>Check the information provided and try Again</p>
+            </div>
+        </div>
+        }
+        { !error&&
         <div
             className="dark:bg-darkTheme bg-lightBlend min-h-screen min-w-screen flex justify-center items-center">
             <div
@@ -172,7 +182,8 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}
+    </>
     );
 };
 

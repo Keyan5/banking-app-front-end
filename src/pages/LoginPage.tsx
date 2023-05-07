@@ -1,15 +1,10 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import axios from 'axios';
+import axios from '../assets/axiosConfig';
 import { RegisterPageProps } from "./RegisterPage";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-
-var jsonData = {
-    "ID": "4321", 
-    "PWD": "1234"
-}
 
 const LoginPage = ({theme}:RegisterPageProps) => {
 
@@ -17,29 +12,37 @@ const LoginPage = ({theme}:RegisterPageProps) => {
     const [password,setPassword] = useState<string>("");
     const [hidePassword,setHidePassword] = useState(true);
 
+    const [errorMessage,setErrorMessage] = useState<string>("");
+
     const navigate = useNavigate();
 
     const handleLogin = async (e:React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         try {
-            const response = await axios.post('http://192.168.104.252:8080/api/v1/auth/authenticate', {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+            const response = await axios.post('/auth/authenticate',{
                 uid: customerID,
                 password
             });
-            console.log(response.data);
             localStorage.setItem('token', response.data.token)
-            
-            navigate("/dashboard");
+            localStorage.setItem('role', response.data.role)
+            if(response.data.errormessage)
+            {
+                setErrorMessage(response.data.errormessage);
+                setTimeout(() => setErrorMessage(""), 3000);
+                return;
+            }
+            if(response.data.role === 'ROLE_USER')
+                navigate("/dashboard");
+            if(response.data.role === 'ROLE_ADMIN')
+                navigate("/adminDashboard");
         } catch (error) {
             console.log(error);
+            navigate("/error");
         }
     }
 
     return (
-        <div className="dark:bg-darkTheme bg-lightBlend min-h-[94vh] min-w-screen flex justify-center items-center">
+        <div className="dark:bg-darkTheme bg-lightBlend min-h-[94vh] min-w-screen flex justify-center items-center mt-5">
             <div className="dark:bg-darkBlend bg-lightTheme sm:w-1/2 md:w-1/2  h-1/2 rounded-lg text-center w-11/12">
                 <h1 className="text-3xl font-bold text-darkTheme dark:text-lightTheme mt-4 ">Welcome back!</h1>
                 <form 

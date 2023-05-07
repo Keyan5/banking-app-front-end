@@ -38,6 +38,11 @@ const LineChart = ({datum,labels,label,backgroundColor,borderColor,title}:LineCh
                 display: true,
                 text: title
             }
+        },
+        scales: {
+            y: {
+                suggestedMin: 0
+            }
         }
     };
     

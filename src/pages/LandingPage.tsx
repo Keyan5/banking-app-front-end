@@ -8,6 +8,7 @@ const LoginPage = lazy(()=>import("./LoginPage"))
 const RegisterPage = lazy(()=>import("./RegisterPage")) 
 const AboutPage = lazy(()=>import ("./AboutPage"))
 const ErrorPage = lazy(()=>import ("./ErrorPage"))
+const RegisterSuccess = lazy(()=>import ("../components/RegisterSuccess"))
 import CustomerDashBoard, { ThemeProps } from './CustomerDashBoard';
 import Loading from './Loading';
 import AdminDashBoard from './AdminDashBoard';
@@ -28,12 +29,13 @@ const LandingPage = ({ChangeThemeHandler,theme}:ThemeProps) => {
               <Route  path="/" Component={HomePage}/>
               <Route  path="/login" Component={() => <LoginPage  theme={theme} />}/>
               <Route  path="/register" Component={() => <RegisterPage  theme={theme} />} />
+              <Route path="/regiterSuccess" Component={RegisterSuccess}/>
               <Route  path="/about" Component={AboutPage}/>
               <Route  path="/contact" Component={ContactUsPage}/>
               <Route path="/dashboard" Component={() =><CustomerDashBoard  ChangeThemeHandler={ChangeThemeHandler} theme={theme}/>} />
-              <Route path="/admindashboard" Component={() =><AdminDashBoard  ChangeThemeHandler={ChangeThemeHandler} theme={theme}/>} />
-              <Route  path="/error" Component={ErrorPage} />
-              <Route  path="*" Component={ErrorPage} />
+              <Route path="/adminDashboard" Component={() =><AdminDashBoard  ChangeThemeHandler={ChangeThemeHandler} theme={theme}/>} />
+              <Route  path="/error" Component={()=><ErrorPage message=''/>} />
+              <Route  path="*" Component={()=><ErrorPage message=''/>} />
             </Routes>
           </Suspense>
           {display&&<Footer/>}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter } from "react-router-dom";
-import CustomerAccount from "./components/CustomerAccount";
+import CustomerAccount from "./components/Account";
 import Home from "./pages/HomePage"
 import AdminDashBoard from "./pages/AdminDashBoard";
+import RegisterSuccess from "./components/RegisterSuccess";
 
 
 const  App = ()=>{

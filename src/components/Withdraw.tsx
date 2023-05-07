@@ -1,27 +1,50 @@
 import {useState} from 'react';
+import axios from '../assets/axiosConfig';
 
 const Withdraw = () => {
     const [amount,
         setAmount] = useState("");
     const [error,
         setError] = useState("");
+    const [success,setSuccess] = useState("");
+
 
     const handleAmountChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        if (Number(value) < 1) {
-            setError("Amount should be greater than 0");
+        if (Number(value) < 1 || isNaN(Number(value))) {
+            setError("Invalid Amount");
         } else {
             setError("");
         }
         setAmount(value);
     }
 
+    const handleWithdraw = async (amount:number) => {
+        const token = localStorage.getItem('token')
+        const response = await axios.post("/withdraw",JSON.stringify({
+            amount: amount
+        }),{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${token}`
+            }
+        });
+        if(response.data.status === 'success')
+        {
+            setSuccess('success,the amount is withdrawn from your account')
+            setTimeout(() => setSuccess(""), 3000);
+            setAmount("");
+        }
+        else
+            setError(response.data.errormessage);
+    }
+
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (Number(amount) < 1) {
-            setError("Amount should be greater than 0");
+        if (Number(amount) < 1|| isNaN(Number(amount))) {
+            setError("Invalid Amount");
         } else {
-            // Perform withdraw action here
+            handleWithdraw(Number(amount));
         }
     }
 
@@ -35,7 +58,7 @@ const Withdraw = () => {
                     <input
                         className={`appearance-none border ${error
                         ? 'border-red-500'
-                        : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none bg-transparent focus:shadow-outline`}
+                        : 'border-gray-300'} rounded w-full py-2 px-3 dark:text-white leading-tight focus:outline-none bg-transparent focus:shadow-outline`}
                         type="number"
                         placeholder="Enter amount"
                         value={amount}
@@ -48,6 +71,9 @@ const Withdraw = () => {
                     Withdraw
                 </button>
             </form>
+            {success&&<div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 relative" role="alert">
+                {success}
+            </div>}
         </div>
     );
 }

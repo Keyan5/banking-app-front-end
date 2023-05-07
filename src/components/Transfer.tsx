@@ -1,16 +1,18 @@
 import {useState} from 'react';
+import axios from '../assets/axiosConfig';
+import { useNavigate } from 'react-router';
 
-interface TransferProps {
-    balance : number;
-}
-
-const Transfer = ({balance} : TransferProps) => {
+const Transfer = () => {
     const [accountNumber,
         setAccountNumber] = useState('');
     const [amount,
         setAmount] = useState('');
     const [errorMsg,
         setErrorMsg] = useState('');
+    const [success,setSuccess] = useState("");
+
+    const navigate = useNavigate()
+
 
     const handleAccountNumberChange = (event : React.ChangeEvent < HTMLInputElement >) => {
         setAccountNumber(event.target.value);
@@ -24,19 +26,46 @@ const Transfer = ({balance} : TransferProps) => {
         event.preventDefault();
 
         const amountNum = Number(amount);
-        if (isNaN(amountNum) || amountNum <= 0) {
-            setErrorMsg('Please enter a valid amount.');
+        const accountNum = Number(accountNumber);
+        if (isNaN(amountNum) || amountNum <= 0 || accountNum <= 0 || isNaN(accountNum)) {
+            setErrorMsg('InValid amount or Account Number');
             return;
         }
 
-        if (amountNum > balance) {
-            setErrorMsg('Insufficient balance.');
-            return;
-        }
+        handleTransfer(amountNum,accountNum);
 
-        // Here you can make an API call or update the state to reflect the transfer
-        console.log(`Transfer ${amountNum} to account ${accountNumber}`);
     };
+
+    const handleTransfer = async (amount:number,accountNumber:number) => {
+        const token = localStorage.getItem('token')
+        try{
+            const response = await axios.post("/pay",JSON.stringify({
+                amount,
+                payeeId: accountNumber
+            }),
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+            );
+            if(response.data.errormessage)
+            {
+                setErrorMsg(response.data.errormessage);
+                setTimeout(() => setErrorMsg(""), 3000);
+                return;
+            }
+            setErrorMsg('');
+            setSuccess(response.data.status);
+            setAmount("");
+            setAccountNumber("");
+            setTimeout(() => setSuccess(""), 3000);
+        }catch(error){
+            console.error(error);
+            navigate("/error");
+        }
+    }   
 
     return (
         <div className="bg-transparent shadow-md rounded px-8  ">
@@ -75,6 +104,9 @@ const Transfer = ({balance} : TransferProps) => {
                     </button>
                 </div>
             </form>
+            {success&&<div className="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 relative" role="alert">
+                {success}
+            </div>}
         </div>
     );
 };

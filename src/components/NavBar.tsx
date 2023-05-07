@@ -4,6 +4,9 @@ import ToggleTheme from './ToggleTheme';
 import { ThemeProps } from '../pages/CustomerDashBoard';
 
 const NavBar = ({ChangeThemeHandler,theme}:ThemeProps) => {
+
+    if(window.location.pathname==="/dashboard"||window.location.pathname==="/adminDashboard")
+        return null;
     return (
         <nav
             className="fixed top-0 left-0 bg-lightTheme dark:bg-darkTheme w-full shadow pt-2 md:pt-0">
@@ -26,13 +29,6 @@ const NavBar = ({ChangeThemeHandler,theme}:ThemeProps) => {
                             className="dark:text-gray-300 text-darkTheme dark:hover:bg-light-white hover:bg-gray-200 my-2 mx-1 py-2 px-3 rounded-md"
                         >
                             Register
-                        </li>
-                    </Link>
-                    <Link to={"features"}>
-                        <li 
-                            className="dark:text-gray-300 text-darkTheme dark:hover:bg-light-white hover:bg-gray-200 my-2 mx-1 py-2 px-3 rounded-md"
-                        >
-                            Features
                         </li>
                     </Link>
                     <Link to={"contact"} >

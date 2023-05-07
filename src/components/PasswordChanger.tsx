@@ -1,20 +1,20 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {useState} from "react";
+import axios from '../assets/axiosConfig';
 
 function PasswordChanger() {
-    const [newPassword,
-        setNewPassword] = useState("");
-    const [message,
-        setMessage] = useState("");
-    const [progress,
-        setProgress] = useState("");
+    const [newPassword,setNewPassword] = useState("");
+    const [message,setMessage] = useState("");
+    const [progress,setProgress] = useState("");
 
-    const [hideOldPassword,
-        setHideOldPassword] = useState(true);
+    const [hideNewPassword,setHideNewPassword] = useState(true);
 
-    const [hideNewPassword,
-        setHideNewPassword] = useState(true);
+    const [changePassword,setChangePassword] = useState(true);
+    
+    const [savePassword,setSavePassword] = useState(false);
+
+    const [status,setStatus] = useState("")
 
     const handlePassword = (passwordValue:string) => {
         const strengthChecks = {
@@ -47,7 +47,6 @@ function PasswordChanger() {
         setProgress(`${ (verifiedList.length / 5) * 100}%`);
         setMessage(strength);
 
-        console.log("verifiedList: ", `${ (verifiedList.length / 5) * 100}%`);
     };
 
     const getActiveColor = (type:string) => {
@@ -58,8 +57,33 @@ function PasswordChanger() {
         return "#FF0054";
     };
 
+    const handleSavePassword = async(password:string) => {
+        const token = localStorage.getItem('token');
+        try{
+            const response = await axios.post('/ChangePassword',JSON.stringify({
+                newPassword: password
+            }),
+            {
+                headers:{
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            setStatus(response.data.Status)
+            setTimeout(() => setStatus(""), 3000);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
     return (
-        <div className="h-full w-full flex flex-col justify-center items-center bg-transparent font-sans ">
+        <>
+        {
+            status&& <p className="text-[0.7rem] font-medium mt-[0.8rem] tracking-[0.05rem] text-green-600 ">
+            Password Changed Successfully
+        </p>
+        }
+        {savePassword&&<div className="h-full w-full flex flex-col justify-center items-center bg-transparent font-sans ">
             <div className=" w-[25rem] bg-transparent text-gray-900 dark:text-gray-300 overflow-hidden my-2">
 
                 <div className="px-4 py-[1.2rem]">
@@ -111,17 +135,37 @@ function PasswordChanger() {
                     {newPassword.length !== 0
                         ? (
                             <p
-                                className=" text-[0.7rem] font-medium mt-[0.8rem] tracking-[0.05rem] text-[#ff6837] "
+                            className=" text-[0.7rem] font-medium mt-[0.8rem] tracking-[0.05rem] text-[#ff6837] "
                                 style={{
-                                color: getActiveColor(message)
-                            }}>
+                                    color: getActiveColor(message)
+                                }}>
                                 Your password is {message}
                             </p>
                         )
                         : null}
                 </div>
             </div>
-        </div>
+        </div>}
+        {changePassword&&<button
+                    className={`text-gray-100 dark:text-gray-200 font-medium font-xl bg-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 w-fit mt-4 p-2 rounded-md`}
+                    onClick={()=>{
+                        setChangePassword(false)
+                        setSavePassword(true)
+                    }}
+                >
+                    Change Password
+                </button>}
+                {savePassword&&<button
+                    className={`text-gray-100 dark:text-gray-200 font-medium font-xl bg-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 w-fit m-2 p-2 rounded-md`}
+                    onClick={()=>{
+                        setChangePassword(true)
+                        handleSavePassword(newPassword);
+                        setSavePassword(false)
+                    }}
+                >
+                    Save Password
+                </button>}
+    </>
     );
 }
 

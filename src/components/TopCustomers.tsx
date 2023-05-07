@@ -1,71 +1,46 @@
-const customers = [
-    {
-        "customerId": "003",
-        "accountNumber": "345678901",
-        "name": "Bob Johnson",
-        "transactionsMade": 31,
-        "balance": 5100.00
-    }, {
-        "customerId": "001",
-        "accountNumber": "123456789",
-        "name": "John Doe",
-        "transactionsMade": 25,
-        "balance": 3500.00
-    }, {
-        "customerId": "006",
-        "accountNumber": "678901234",
-        "name": "Samantha Brown",
-        "transactionsMade": 21,
-        "balance": 2850.00
-    }, {
-        "customerId": "009",
-        "accountNumber": "901234567",
-        "name": "Mike Chen",
-        "transactionsMade": 28,
-        "balance": 4150.00
-    }, {
-        "customerId": "004",
-        "accountNumber": "456789012",
-        "name": "Mary Williams",
-        "transactionsMade": 12,
-        "balance": 2000.00
-    }, {
-        "customerId": "008",
-        "accountNumber": "890123456",
-        "name": "Lisa Kim",
-        "transactionsMade": 15,
-        "balance": 1950.00
-    }, {
-        "customerId": "002",
-        "accountNumber": "234567890",
-        "name": "Jane Smith",
-        "transactionsMade": 17,
-        "balance": 1250.00
-    }, {
-        "customerId": "007",
-        "accountNumber": "789012345",
-        "name": "David Jones",
-        "transactionsMade": 9,
-        "balance": 1450.00
-    }, {
-        "customerId": "005",
-        "accountNumber": "567890123",
-        "name": "Tom Lee",
-        "transactionsMade": 6,
-        "balance": 750.00
-    }, {
-        "customerId": "010",
-        "accountNumber": "012345678",
-        "name": "Emily Davis",
-        "transactionsMade": 3,
-        "balance": 250.00
-    }
-]
+import { useEffect, useState } from "react"
+import axios from "../assets/axiosConfig"
+import Loading from "../pages/Loading";
 
-const TopCustomers = () => {
+interface Customer {
+    uid: string,
+    accNo: string,
+    name: string,
+    count: number,
+    balance: number
+}
+
+const TopCustomers = () => {    
+
+    const [customers,setCustomers] = useState<Array<Customer>>();
+    const [loading,setLoading] = useState(true);
+
+    useEffect(() => {
+        const getCustomers = async () => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('/GetTopFiveUsers',{
+                    headers:{
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setCustomers(response.data);
+            } catch (error) {
+                console.log(error);
+            }finally{
+                setLoading(false);
+            }
+        }
+        getCustomers();
+    }, [])
+
     return (
-        <div className="flex flex-col justify-center items-center h-screen ">
-            <h5 className="px-4 pt-1 text-3xl font-bold text-gray-900 dark:text-gray-300 mb-1">Transaction History</h5>
+        <>
+        {   loading&&<Loading/> }
+        {!loading&&<div className="flex flex-col justify-center items-center h-screen ">
+            <h5 className="px-4 pt-1 text-3xl font-bold text-gray-900 dark:text-gray-300 mb-1">Top Customers</h5>
             <h6 className="px-4 pt-1 text-xl font-bold text-gray-900 dark:text-gray-300 text-center mb-4">Top Customers are listed based on their Balance</h6>
             <section className = "container px-4 mx-auto " > 
                 <div className="flex flex-col ">
@@ -117,23 +92,23 @@ const TopCustomers = () => {
                                         <tbody
                                             className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                                             {
-                                                customers.map((customer,index)=>
-                                            <tr>
+                                                customers&&customers.map((customer,index)=>
+                                                <tr key={index}>
                                                 <td
                                                     className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
                                                     <h1 className="text-center">{index+1}</h1>
                                                     </td>
                                                     <td
-                                                        className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{customer.customerId}</td>
+                                                        className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{customer.uid}</td>
                                                     <td
-                                                        className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{customer.accountNumber}</td>
+                                                        className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{customer.accNo}</td>
                                                     <td
                                                         className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
                                                         {customer.name}
                                                     </td>
                                                     <td
                                                         className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                                            {customer.transactionsMade}
+                                                            {customer.count}
                                                     </td>
                                                     <td className="px-4 py-4 text-sm  text-gray-500 dark:text-gray-300 whitespace-nowrap">
                                                         {customer.balance}
@@ -147,7 +122,8 @@ const TopCustomers = () => {
                     </div>
                 </div>
             </section>
-        </div>
+        </div>}
+    </>
     )
 }
 

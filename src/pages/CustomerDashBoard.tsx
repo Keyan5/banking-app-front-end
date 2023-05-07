@@ -5,9 +5,10 @@ import CustomerStatistics from '../components/CustomerStatistics';
 import ProfitsStatistics from '../components/ProfitsStatistics';
 import Settings,{SettingsProps} from '../components/Settings';
 import TopCustomers from '../components/TopCustomers';
-import CustomerAccount from '../components/CustomerAccount';
+import CustomerAccount from '../components/Account';
 import TransactionHistory from '../components/TransactionHistory';
 import Transactions from '../components/Transactions';
+import Logout from '../components/Logout';
 
 
 export interface ThemeProps {
@@ -40,7 +41,7 @@ const DashBoard = ({ChangeThemeHandler,theme}:ThemeProps) => {
                 {currentMenuItem.Transactions?<Transactions/>:null}
                 {currentMenuItem["Transaction Statistics"]?<TransactionsStatistics/>:null}
                 {currentMenuItem["Top Customers"]?<TopCustomers/>:null}
-                {currentMenuItem.Settings?<Settings theme={theme} ChangeThemeHandler={ChangeThemeHandler}/>:null}
+                {currentMenuItem.Logout?<Logout/>:null}
             </div>
         </div>
     );

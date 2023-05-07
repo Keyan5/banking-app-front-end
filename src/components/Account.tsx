@@ -2,35 +2,37 @@ import {faCopy} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {useEffect, useState} from 'react';
 import PasswordChanger from './PasswordChanger';
-import axios from 'axios';
+import axios from '../assets/axiosConfig';
 import Loading from '../pages/Loading';
+import ErrorPage from '../pages/ErrorPage';
+import { useNavigate } from 'react-router-dom';
 
-interface customerProps {
-    uid: String,
-    name: String,
-    balance: Number,
+interface Account {
+    uid: string,
+    name: string,
+    balance: number,
     lastlogin: Date,
-    count: Number
+    count: number,
+    accNo: number
 }
 
 const CustomerAccount = () => {
 
     const [copied,setCopied] = useState(false);
 
-    const [ account,setAccount ] = useState<customerProps>();
+    const [ account,setAccount ] = useState<Account>();
     
-    const [changePassword,setChangePassword] = useState(true);
-    
-    const [savePassword,setSavePassword] = useState(false);
 
     const [loading,setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     const handleCopyClick = (value : string) => {
         navigator
             .clipboard
             .writeText(value);
         setCopied(true);
-        setTimeout(() => setCopied(false), 1000); // Hide tooltip after 1 second
+        setTimeout(() => setCopied(false), 1000); 
     };
 
     useEffect(() => {
@@ -38,23 +40,16 @@ const CustomerAccount = () => {
             setLoading(true)
             try{
                 const token = localStorage.getItem('token');
-                console.log({
+                const accountResponse = await axios.get(`/Profile`,{
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                }})
-                const accountResponse = await axios.get(`http://192.168.104.252:8080/api/v1/profile`,{
-                    headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     }}
                 );
-                console.log(accountResponse.data);
                 setAccount(accountResponse.data);
             }catch(error){
                 console.error(error);
-            }
-            finally{
+                navigate('/error') 
+            }finally{
                 setLoading(false)
             }
         }
@@ -65,7 +60,7 @@ const CustomerAccount = () => {
     return (    
         <>
         {loading&&<Loading/>}
-        {!loading&&
+        {!loading&&account&&
         <div className="flex justify-center items-center w-full h-screen ">                    
             {copied && (
                         <span
@@ -74,7 +69,7 @@ const CustomerAccount = () => {
                         </span>
                     )}
             <div
-                className="flex flex-col justify-center items-center w-11/12 md:w-1/2 h-fit py-4 bg-slate-300 dark:bg-gray-900 rounded-lg">
+                className="flex flex-col justify-center items-center w-11/12 md:w-1/2 h-fit py-4 bg-gray-200 dark:bg-gray-900 rounded-lg">
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-300 mb-4">Account</h1>
                 <div className="flex flex-col justify-center w-full h-full space-y-4 md:px-10 px-5 text-gray-800 dark:text-gray-200">
                     <div className="flex justify-between rounded-lg w-full dark:opacity-70 opacity-100 hover:opacity-100">
@@ -92,11 +87,11 @@ const CustomerAccount = () => {
 
                     <div className="flex justify-between group dark:opacity-70 opacity-100 hover:opacity-100">
                         <h1 className="text-xl font-semibold  ">Account Number</h1>
-                        <h1 className="text-xl font-semibold  hover:mr-2 pl-2">564189652365</h1>
+                        <h1 className="text-xl font-semibold  hover:mr-2 pl-2">{account.accNo}</h1>
                         <FontAwesomeIcon
                             className='hidden dark:text-white text-xl group-hover:block '
                             icon={faCopy}
-                            onClick={() => handleCopyClick("564189652365")}/> 
+                            onClick={() => handleCopyClick(`${account.accNo}`)}/> 
                     </div>
                     <div className="flex justify-between dark:opacity-70 opacity-100 hover:opacity-100">
                         <h1 className="text-xl font-semibold  ">Current Balance</h1>
@@ -111,25 +106,7 @@ const CustomerAccount = () => {
                         <h1 className="text-xl font-semibold  ">{new Date(account.lastlogin).toLocaleString()}</h1>
                     </div>
                 </div>
-                {changePassword&&<button
-                    className={`text-gray-100 dark:text-gray-200 font-medium font-xl bg-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 w-fit mt-4 p-2 rounded-md`}
-                    onClick={()=>{
-                        setChangePassword(false)
-                        setSavePassword(true)
-                    }}
-                >
-                    Change Password
-                </button>}
-                {savePassword?<PasswordChanger/>:null}
-                {savePassword&&<button
-                    className={`text-gray-100 dark:text-gray-200 font-medium font-xl bg-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 w-fit m-2 p-2 rounded-md`}
-                    onClick={()=>{
-                        setChangePassword(true)
-                        setSavePassword(false)
-                    }}
-                >
-                    Save Password
-                </button>}
+                <PasswordChanger/>
             </div>
         </div>
         }
