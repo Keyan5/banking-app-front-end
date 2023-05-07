@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react';
 import PasswordChanger from './PasswordChanger';
 import axios from '../assets/axiosConfig';
 import Loading from '../pages/Loading';
-import ErrorPage from '../pages/ErrorPage';
 import { useNavigate } from 'react-router-dom';
 
 interface Account {

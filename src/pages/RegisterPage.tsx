@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import DatePicker from "../components/DatePicker";
 import axios from "../assets/axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
-import RegisterSuccess from "../components/RegisterSuccess";
 
 export interface RegisterPageProps {
     theme : string;
@@ -29,7 +28,6 @@ const RegisterPage = ({theme} : RegisterPageProps) => {
             name,
             email,
             address,
-            password: "secret", 
             mobile:phone,
             aadarno: aadhar,
             panno: pan,

@@ -9,10 +9,11 @@ const RegisterPage = lazy(()=>import("./RegisterPage"))
 const AboutPage = lazy(()=>import ("./AboutPage"))
 const ErrorPage = lazy(()=>import ("./ErrorPage"))
 const RegisterSuccess = lazy(()=>import ("../components/RegisterSuccess"))
-import CustomerDashBoard, { ThemeProps } from './CustomerDashBoard';
-import Loading from './Loading';
-import AdminDashBoard from './AdminDashBoard';
-import ContactUsPage from './ContactUsPage';
+const CustomerDashBoard = lazy(()=>import ("./CustomerDashBoard"))
+const Loading = lazy(()=>import ("./Loading"))
+const AdminDashBoard = lazy(()=>import ("./AdminDashBoard"))
+const ContactUsPage = lazy(()=>import ("./ContactUsPage"))
+import { ThemeProps } from './CustomerDashBoard';
 
 
 const LandingPage = ({ChangeThemeHandler,theme}:ThemeProps) => {

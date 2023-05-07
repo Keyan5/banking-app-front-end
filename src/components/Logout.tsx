@@ -8,7 +8,7 @@ const Logout = () => {
     const [loading,setLoading] = useState(true);
     useEffect(() => {
     const token = localStorage.getItem("token");
-    const dologout = async () => {
+    const logout = async () => {
         setLoading(true);
         try{
             const response = await axios.get('/auth/logout',{
@@ -26,7 +26,7 @@ const Logout = () => {
             setLoading(false);
         }
     }
-    dologout();
+    logout();
     }, [])
     return (
         <>

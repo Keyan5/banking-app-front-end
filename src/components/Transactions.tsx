@@ -3,8 +3,6 @@ import Deposit from "./Deposit"
 import Transfer from "./Transfer"
 import Withdraw from "./Withdraw"
 
-const balance = 10000;
-
 const Transactions = () => {
 
     const [deposit,setDeposit] = useState(false);
