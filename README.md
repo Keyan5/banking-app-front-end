@@ -20,9 +20,12 @@ BankEase is a modern web application designed to provide customers with a seamle
 
 ## Getting Started
 
-1. Clone the repository ``
+1. Clone the repository `https://github.com/Keyan5/banking-app-front-end.git`
 2. Install dependencies with `npm install`
 3. Start the development server with `npm start`
+4. Make sure the back-end is running on `localhost:8080`
+5. Navigate to `localhost:5173` in your browser
+6. Enjoy!
 
 ## Contributing
 
@@ -37,7 +40,3 @@ We welcome contributions to BankEase! To contribute, please follow these steps:
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for more information.
-
-## Contact
-
-For support or inquiries, please email us at support@bankease.com or fill out our Contact Us form on our website.
