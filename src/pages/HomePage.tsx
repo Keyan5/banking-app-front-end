@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const HomePage = () => {
   return (
-    <div className="md:mt-14 flex justify-center items-center h-screen overflow-scroll">
+    <div className="md:mt-14 flex justify-center items-center h-screen ">
       <section className="h-fit dark:bg-black bg-lightTheme md:p-4 flex justify-end items-center w-full xl:w-11/12">
           <div className="m-4 flex flex-col-reverse md:flex-row ">
             <div className="text-black dark:text-white text-lg font-medium pl-10 pb-3 md:pl-8 md:p-8 w-full md:w-3/4 space-y-8 ">
