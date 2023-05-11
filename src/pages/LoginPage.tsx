@@ -51,7 +51,7 @@ const LoginPage = ({theme}:RegisterPageProps) => {
                 </div>
             </div>
         }
-        <div className="dark:bg-darkTheme bg-lightBlend min-h-[94vh] min-w-screen flex justify-center items-center mt-5">
+        <div className="dark:bg-darkTheme bg-lightBlend min-h-[92vh] min-w-screen flex justify-center items-center mt-5">
             <div className="dark:bg-darkBlend bg-lightTheme sm:w-1/2 md:w-1/2  h-1/2 rounded-lg text-center w-11/12">
                 <h1 className="text-3xl font-bold text-darkTheme dark:text-lightTheme mt-4 ">Welcome back!</h1>
                 <form 
